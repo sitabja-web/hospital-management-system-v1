@@ -8,7 +8,7 @@
   },
   "scripts": {
     "install:server": "npm ci --omit=dev --prefix server",
-    "install:client": "npx --yes pnpm@latest --dir client install --frozen-lockfile --prod=false",
+    "install:client": "npx --yes pnpm@latest --dir client install --no-frozen-lockfile --prod=false",
     "build:client": "npx --yes pnpm@latest --dir client build",
     "build": "npm run install:server && npm run install:client && npm run build:client",
     "start": "npm start --prefix server",
