@@ -375,5 +375,4 @@ Never commit `.env` files, database dumps, tokens, build output, or real patient
 
 ---
 
-<sub>Built for the Software Engineering laboratory (5th semester). For educational use only.</sub>#   h o s p i t a l - m a n a g e m e n t - s y s t e m - v 1  
- 
+<sub>Built for the Software Engineering laboratory (5th semester). For educational use only.</sub>
