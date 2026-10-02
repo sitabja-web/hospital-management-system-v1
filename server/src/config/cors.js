@@ -3,7 +3,13 @@ import { HttpError } from '../lib/errors.js';
 
 export function corsMiddleware(req, res, next) {
   const origin = req.headers.origin;
-  if (origin && !env.corsOrigins.includes(origin)) {
+
+  // Only enforce origin check for API routes.
+  // Static asset requests (JS, CSS, images) are same-origin loads from the
+  // HTML page and must never be blocked by CORS enforcement.
+  const isApiRoute = req.path.startsWith('/api/');
+
+  if (origin && isApiRoute && !env.corsOrigins.includes(origin)) {
     return next(new HttpError(403, 'CORS_ORIGIN_DENIED', 'Origin is not allowed.'));
   }
   if (origin) {
