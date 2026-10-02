@@ -1,0 +1,100 @@
+flowchart LR
+    Patient[Patient]
+    Doctor[Doctor]
+    Receptionist[Receptionist]
+    Admin[Administrator]
+
+    D1[(D1 User Data)]
+    D2[(D2 Doctor and Availability Data)]
+    D3[(D3 Appointment Data)]
+    D4[(D4 Medical and Billing Data)]
+
+    subgraph S1[1.0 User Authentication]
+        P11((1.1 Receive Credentials))
+        P12((1.2 Validate User))
+        P13((1.3 Generate Session Token))
+        P14((1.4 Return Access Result))
+        P11 --> P12 --> P13 --> P14
+    end
+
+    subgraph S2[2.0 Doctor and Availability Management]
+        P21((2.1 Receive Search or Profile Request))
+        P22((2.2 Manage Doctor Information))
+        P23((2.3 Manage Availability))
+        P24((2.4 Return Doctors and Slots))
+        P21 --> P22 --> P23 --> P24
+    end
+
+    subgraph S3[3.0 Appointment Management]
+        P31((3.1 Receive Appointment Request))
+        P32((3.2 Check Availability))
+        P33((3.3 Create or Update Appointment))
+        P34((3.4 Return Appointment Status))
+        P31 --> P32 --> P33 --> P34
+    end
+
+    subgraph S4[4.0 Medical Records Management]
+        P41((4.1 Receive Medical Information Request))
+        P42((4.2 Validate Appointment and Access))
+        P43((4.3 Store or Retrieve Medical Record))
+        P44((4.4 Return Medical Information))
+        P41 --> P42 --> P43 --> P44
+    end
+
+    subgraph S5[5.0 Billing and Reporting]
+        P51((5.1 Receive Billing or Report Request))
+        P52((5.2 Prepare Invoice Information))
+        P53((5.3 Store or Retrieve Billing Data))
+        P54((5.4 Return Billing or Report Result))
+        P51 --> P52 --> P53 --> P54
+    end
+
+    Patient -->|Login credentials| P11
+    Doctor -->|Login credentials| P11
+    Receptionist -->|Login credentials| P11
+    Admin -->|Login credentials| P11
+    P12 <--> D1
+    P14 -->|Session token and access result| Patient
+    P14 -->|Session token and access result| Doctor
+    P14 -->|Session token and access result| Receptionist
+    P14 -->|Session token and access result| Admin
+
+    Patient -->|Doctor search request| P21
+    Doctor -->|Profile and availability information| P21
+    Admin -->|Doctor configuration| P21
+    P22 <--> D1
+    P23 <--> D2
+    P24 -->|Doctor list and available slots| Patient
+    P24 -->|Doctor list and available slots| Receptionist
+
+    Patient -->|Booking or cancellation request| P31
+    Receptionist -->|Appointment scheduling request| P31
+    Doctor -->|Appointment status update| P31
+    P32 <--> D2
+    P33 <--> D3
+    P34 -->|Appointment confirmation and status| Patient
+    P34 -->|Appointment schedule| Doctor
+    P34 -->|Appointment schedule| Receptionist
+
+    Doctor -->|Diagnosis, notes, and prescriptions| P41
+    Patient -->|Medical-history request| P41
+    P42 <--> D3
+    P43 <--> D4
+    P44 -->|Medical records and prescriptions| Patient
+    P44 -->|Patient history| Doctor
+
+    Receptionist -->|Invoice and payment information| P51
+    Patient -->|Invoice request| P51
+    Admin -->|Report request| P51
+    P52 <--> D3
+    P53 <--> D4
+    P54 -->|Invoice and billing status| Patient
+    P54 -->|Billing result| Receptionist
+    P54 -->|Operational report| Admin
+
+    classDef external fill:#E8F1FB,stroke:#1F4E79,stroke-width:1.5px,color:#102A43;
+    classDef process fill:#FFF2CC,stroke:#BF9000,stroke-width:1.5px,color:#4A3B00;
+    classDef store fill:#F4CCCC,stroke:#990000,stroke-width:1.5px,color:#4A0000;
+    class Patient,Doctor,Receptionist,Admin external;
+    class P11,P12,P13,P14,P21,P22,P23,P24,P31,P32,P33,P34,P41,P42,P43,P44,P51,P52,P53,P54 process;
+    class D1,D2,D3,D4 store;

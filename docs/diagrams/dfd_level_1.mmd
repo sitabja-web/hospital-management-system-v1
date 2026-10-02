@@ -1,0 +1,64 @@
+flowchart LR
+    Patient[Patient]
+    Doctor[Doctor]
+    Receptionist[Receptionist]
+    Admin[Administrator]
+
+    P1((1.0 User Authentication))
+    P2((2.0 Doctor and Availability Management))
+    P3((3.0 Appointment Management))
+    P4((4.0 Medical Records Management))
+    P5((5.0 Billing and Reporting))
+
+    D1[(D1 User Data)]
+    D2[(D2 Doctor and Availability Data)]
+    D3[(D3 Appointment Data)]
+    D4[(D4 Medical and Billing Data)]
+
+    Patient -->|Login credentials| P1
+    Doctor -->|Login credentials| P1
+    Receptionist -->|Login credentials| P1
+    Admin -->|Login credentials| P1
+    P1 <--> D1
+    P1 -->|Session token and access result| Patient
+    P1 -->|Session token and access result| Doctor
+    P1 -->|Session token and access result| Receptionist
+    P1 -->|Session token and access result| Admin
+
+    Patient -->|Doctor search request| P2
+    Doctor -->|Availability information| P2
+    Admin -->|Doctor configuration| P2
+    P2 <--> D2
+    P2 -->|Doctor list and available slots| Patient
+    P2 -->|Doctor list and available slots| Receptionist
+
+    Patient -->|Booking or cancellation request| P3
+    Receptionist -->|Appointment scheduling request| P3
+    Doctor -->|Appointment status update| P3
+    P3 <--> D3
+    P3 -->|Appointment confirmation and status| Patient
+    P3 -->|Appointment schedule| Doctor
+    P3 -->|Appointment schedule| Receptionist
+
+    Doctor -->|Diagnosis, notes, and prescriptions| P4
+    Patient -->|Medical-history request| P4
+    P4 <--> D3
+    P4 <--> D4
+    P4 -->|Medical records and prescriptions| Patient
+    P4 -->|Patient history| Doctor
+
+    Receptionist -->|Invoice and payment information| P5
+    Patient -->|Invoice request| P5
+    Admin -->|Report request| P5
+    P5 <--> D3
+    P5 <--> D4
+    P5 -->|Invoice and billing status| Patient
+    P5 -->|Billing result| Receptionist
+    P5 -->|Operational report| Admin
+
+    classDef external fill:#E8F1FB,stroke:#1F4E79,stroke-width:1.5px,color:#102A43;
+    classDef process fill:#FFF2CC,stroke:#BF9000,stroke-width:1.5px,color:#4A3B00;
+    classDef store fill:#F4CCCC,stroke:#990000,stroke-width:1.5px,color:#4A0000;
+    class Patient,Doctor,Receptionist,Admin external;
+    class P1,P2,P3,P4,P5 process;
+    class D1,D2,D3,D4 store;
